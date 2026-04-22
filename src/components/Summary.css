@@ -1,0 +1,35 @@
+.summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.summary__card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 20px;
+}
+
+.summary__card--green {
+  border-left: 3px solid var(--green);
+}
+
+.summary__card--red {
+  border-left: 3px solid var(--red);
+}
+
+.summary__label {
+  color: var(--muted);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 6px;
+}
+
+.summary__value {
+  font-size: 28px;
+  font-weight: 600;
+  font-feature-settings: 'tnum';
+}
