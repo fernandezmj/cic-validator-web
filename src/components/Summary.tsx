@@ -10,21 +10,21 @@ export default function Summary({ report }: SummaryProps) {
 
   return (
     <div className="summary">
-      <div className="summary__card">
-        <div className="summary__label">Total</div>
-        <div className="summary__value">{report.totalLines}</div>
+      <div className="summary-card">
+        <div className="summary-label">Total</div>
+        <div className="summary-value">{report.totalLines}</div>
       </div>
-      <div className="summary__card summary__card--green">
-        <div className="summary__label">Passed</div>
-        <div className="summary__value">{report.passed}</div>
+      <div className="summary-card summary-card--green">
+        <div className="summary-label">Passed</div>
+        <div className="summary-value">{report.passed}</div>
       </div>
-      <div className="summary__card summary__card--red">
-        <div className="summary__label">Failed</div>
-        <div className="summary__value">{report.failed}</div>
+      <div className="summary-card summary-card--red">
+        <div className="summary-label">Failed</div>
+        <div className="summary-value">{report.failed}</div>
       </div>
-      <div className="summary__card">
-        <div className="summary__label">Pass rate</div>
-        <div className="summary__value">{passRate.toFixed(1)}%</div>
+      <div className="summary-card">
+        <div className="summary-label">Pass rate</div>
+        <div className="summary-value">{passRate.toFixed(1)}%</div>
       </div>
     </div>
   );

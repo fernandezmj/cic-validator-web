@@ -29,7 +29,7 @@ export default function ReportTable({ report }: ReportTableProps) {
 
   return (
     <div className="report">
-      <div className="report__filters">
+      <div className="report-filters">
         <button
           className={filter === 'all' ? 'active' : ''}
           onClick={() => setFilter('all')}
@@ -50,7 +50,7 @@ export default function ReportTable({ report }: ReportTableProps) {
         </button>
       </div>
 
-      <table className="report__table">
+      <table className="report-table">
         <thead>
           <tr>
             <th style={{ width: 64 }}>Line</th>
@@ -66,7 +66,7 @@ export default function ReportTable({ report }: ReportTableProps) {
             return (
               <tr
                 key={r.lineNumber}
-                className={`report__row ${r.passed ? 'ok' : 'fail'}`}
+                className={`report-row ${r.passed ? 'ok' : 'fail'}`}
                 onClick={() => hasContent && toggle(r.lineNumber)}
               >
                 <td className="num">{r.lineNumber}</td>
@@ -84,14 +84,14 @@ export default function ReportTable({ report }: ReportTableProps) {
                   {r.passed ? (
                     <span className="muted">—</span>
                   ) : (
-                    <ul className="report__errors">
+                    <ul className="report-errors">
                       {r.errors.map((e, i) => (
                         <li key={i}>{e.message}</li>
                       ))}
                     </ul>
                   )}
                   {isExpanded && (
-                    <pre className="report__raw" onClick={(e) => e.stopPropagation()}>
+                    <pre className="report-raw" onClick={(e) => e.stopPropagation()}>
                       {r.raw}
                     </pre>
                   )}
@@ -102,7 +102,7 @@ export default function ReportTable({ report }: ReportTableProps) {
         </tbody>
       </table>
 
-      {rows.length === 0 && <div className="report__empty">No lines match this filter.</div>}
+      {rows.length === 0 && <div className="report-empty">No lines match this filter.</div>}
     </div>
   );
 }

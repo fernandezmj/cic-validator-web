@@ -23,9 +23,9 @@ export default function App() {
 
   return (
     <div className="app">
-      <header className="app__header">
+      <header className="app-header">
         <h1>CIC Submission Validator</h1>
-        <p className="app__sub">
+        <p className="app-sub">
           Validates pipe-delimited submission files against HD/ID record rules.
         </p>
       </header>
@@ -34,9 +34,9 @@ export default function App() {
 
       {report && (
         <>
-          <div className="app__toolbar">
-            <div className="app__filename">
-              <span className="app__filename-icon">📄</span>
+          <div className="app-toolbar">
+            <div className="app-filename">
+              <span className="app-filename-icon">📄</span>
               <span>{fileName}</span>
             </div>
             <button onClick={reset}>Validate another file</button>
@@ -46,7 +46,7 @@ export default function App() {
         </>
       )}
 
-      <footer className="app__footer">
+      <footer className="app-footer">
         <p>
           Validator logic mirrors the companion <code>cic-validator-cli</code> repo —
           same pure TypeScript module, delivered via browser instead of stdin.

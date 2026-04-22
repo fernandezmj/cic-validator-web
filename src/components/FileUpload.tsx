@@ -40,9 +40,9 @@ export default function FileUpload({ onFile }: FileUploadProps) {
         if (e.key === 'Enter' || e.key === ' ') inputRef.current?.click();
       }}
     >
-      <div className="upload__icon">⬆</div>
-      <div className="upload__title">Drop a submission file here</div>
-      <div className="upload__sub">or click to browse — .txt, pipe-delimited</div>
+      <div className="upload-icon">⬆</div>
+      <div className="upload-title">Drop a submission file here</div>
+      <div className="upload-sub">or click to browse — .txt, pipe-delimited</div>
       <input
         ref={inputRef}
         type="file"

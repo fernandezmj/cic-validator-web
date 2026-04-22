@@ -4,24 +4,24 @@
   padding: 40px 24px 80px;
 }
 
-.app__header {
+.app-header {
   margin-bottom: 32px;
 }
 
-.app__header h1 {
+.app-header h1 {
   margin: 0 0 8px;
   font-size: 28px;
   font-weight: 600;
   letter-spacing: -0.01em;
 }
 
-.app__sub {
+.app-sub {
   margin: 0;
   color: var(--muted);
   font-size: 14px;
 }
 
-.app__toolbar {
+.app-toolbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -32,7 +32,7 @@
   border-radius: 8px;
 }
 
-.app__filename {
+.app-filename {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -41,11 +41,11 @@
   color: var(--muted);
 }
 
-.app__filename-icon {
+.app-filename-icon {
   font-size: 16px;
 }
 
-.app__footer {
+.app-footer {
   margin-top: 64px;
   padding-top: 24px;
   border-top: 1px solid var(--border);
@@ -54,7 +54,7 @@
   text-align: center;
 }
 
-.app__footer code {
+.app-footer code {
   background: var(--surface);
   padding: 2px 6px;
   border-radius: 4px;

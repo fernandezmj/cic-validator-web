@@ -5,22 +5,22 @@
   margin-bottom: 16px;
 }
 
-.summary__card {
+.summary-card {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 16px 20px;
 }
 
-.summary__card--green {
+.summary-card--green {
   border-left: 3px solid var(--green);
 }
 
-.summary__card--red {
+.summary-card--red {
   border-left: 3px solid var(--red);
 }
 
-.summary__label {
+.summary-label {
   color: var(--muted);
   font-size: 12px;
   text-transform: uppercase;
@@ -28,7 +28,7 @@
   margin-bottom: 6px;
 }
 
-.summary__value {
+.summary-value {
   font-size: 28px;
   font-weight: 600;
   font-feature-settings: 'tnum';
