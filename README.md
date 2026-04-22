@@ -83,13 +83,47 @@ Three hardenings ship with the build:
 - **Browser extensions with full-page access** can read anything on the page. This is outside the app's control — flag it to end-users if relevant.
 - **The user themselves** can copy the report, screenshot it, or paste it somewhere. That's their action, not the tool's.
 
-### Recommendations before deploying to production
+### Deployment — GitHub + Vercel
 
-- Host on a provider with a privacy-respecting stance (Cloudflare Pages, GitHub Pages, a self-run static server). Avoid providers that inject third-party analytics or edge scripts into your HTML.
-- Add the CSP as an HTTP response header at the CDN / reverse-proxy level in addition to the meta tag — `Content-Security-Policy: default-src 'self'; …` — so it applies before the DOM parser starts.
-- Consider a `Strict-Transport-Security`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: no-referrer`, `Permissions-Policy: ()` bundle in your response headers.
-- If you embed this tool in an iframe from an Island Credit property, update `frame-ancestors` in the CSP from `'none'` to the explicit parent origin.
-- Keep dependencies audited (`npm audit`). The tool has a minimal footprint: React, React-DOM, two `@fontsource-variable/*` font packages, and Vite. No analytics, no tracking, no telemetry.
+This repo is set up to deploy on [Vercel](https://vercel.com) from its `main` branch on GitHub. A `vercel.json` at the project root applies a hardened response-header set at the edge:
+
+| Header | Value | Why |
+|---|---|---|
+| `Content-Security-Policy` | same policy as the meta-tag above | Header-level CSP applies before the DOM parser runs, stronger than the meta-tag alone |
+| `Strict-Transport-Security` | `max-age=63072000; includeSubDomains; preload` | Forces HTTPS for 2 years; eligible for the HSTS preload list |
+| `X-Content-Type-Options` | `nosniff` | Browser won't second-guess the declared MIME type |
+| `X-Frame-Options` | `DENY` | Legacy clickjacking protection alongside `frame-ancestors` |
+| `Referrer-Policy` | `no-referrer` | Outbound clicks leak nothing |
+| `Permissions-Policy` | all disabled — camera, geolocation, microphone, payment, usb, etc. | Revokes browser APIs the app doesn't use |
+| `Cross-Origin-Opener-Policy` | `same-origin` | Window/tab isolation |
+| `Cross-Origin-Resource-Policy` | `same-origin` | No other site can embed this origin's resources |
+| `Cache-Control` (on `/assets/*`) | `public, max-age=31536000, immutable` | Hashed Vite assets cache forever |
+
+#### One-time Vercel setup
+
+1. Sign in to [vercel.com](https://vercel.com) with GitHub.
+2. *Add New → Project* → pick the `cic-validator-web` repo.
+3. Framework preset auto-detects **Vite**. Build command: `npm run build`. Output: `dist`.
+4. **Do not enable Vercel Analytics or Speed Insights.** Both inject a first-party tracking script that violates the data-locality claim. Leave them off.
+5. Deploy. Every push to `main` re-deploys automatically.
+
+#### Verify headers after deploy
+
+```bash
+curl -sI https://your-deployment.vercel.app | grep -E "(content-security|strict-transport|x-|referrer|permissions|cross-origin)"
+```
+
+Or open DevTools → Network → select the HTML document → Response Headers.
+
+#### If you embed in an Island Credit property via iframe
+
+Change `frame-ancestors 'none'` in both `vite.config.ts` and `vercel.json` to the explicit parent origin, e.g. `frame-ancestors https://islandcredit.tech https://*.islandcredit.tech`. Also drop `X-Frame-Options: DENY` from `vercel.json` (the CSP rule is the modern replacement).
+
+### General recommendations
+
+- Keep Vercel Analytics / Speed Insights **off**. If you need usage numbers, use a self-hosted Plausible or Umami with anonymized IPs.
+- Keep dependencies audited (`npm audit`). Runtime footprint: React, React-DOM, two `@fontsource-variable/*` font packages. Build-only: Vite + `@vitejs/plugin-react` + TypeScript. No analytics, no tracking, no telemetry.
+- If you ever need outbound calls (e.g., to fetch a PSIC/PSOC domain table), relax `connect-src 'none'` to the specific origin — never to `*`.
 
 ## Known limitations
 
