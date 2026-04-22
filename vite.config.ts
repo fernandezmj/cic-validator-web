@@ -1,6 +1,43 @@
-import { defineConfig } from 'vite';
+import { defineConfig, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
 
+/**
+ * Inject a strict Content-Security-Policy meta tag at build time only.
+ * Dev mode is skipped because Vite HMR needs a WebSocket to the dev server
+ * and `connect-src 'none'` would break it.
+ *
+ * The policy locks the page to its own origin for scripts, styles and fonts,
+ * blocks every outbound network call (`connect-src 'none'`), and forbids
+ * framing, base-URI hijacking, and object embeds. Combined with the
+ * no-referrer meta tag, a deployed build cannot exfiltrate the uploaded
+ * submission even if a transitive dependency tried to.
+ */
+function injectProdCsp(): Plugin {
+  const csp = [
+    "default-src 'self'",
+    "script-src 'self'",
+    "style-src 'self' 'unsafe-inline'",
+    "font-src 'self'",
+    "img-src 'self' data:",
+    "connect-src 'none'",
+    "form-action 'none'",
+    "frame-ancestors 'none'",
+    "base-uri 'self'",
+    "object-src 'none'",
+  ].join('; ');
+
+  return {
+    name: 'inject-prod-csp',
+    apply: 'build',
+    transformIndexHtml(html) {
+      return html.replace(
+        /<head>/,
+        `<head>\n    <meta http-equiv="Content-Security-Policy" content="${csp}" />`,
+      );
+    },
+  };
+}
+
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), injectProdCsp()],
 });
